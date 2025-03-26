@@ -3,20 +3,12 @@ from django.http import JsonResponse
 
 from .models import TestModel
 
-
 def test_view(request):
-    # test_objects = TestModel.objects.filter().order_by('name')
-    test_objects = TestModel.objects.all().order_by('create_at')
-
-
-    # print(test_objects.name)
-
-    for obj in test_objects:
-        print(obj.create_at)
-
-
-    data = {
-        "status" : "ok",
-        "message": "hello world",
+    context = {
+        "test" : "test"
     }
-    return JsonResponse(data)
+    if ( request.method == "POST" ):
+        context['req_post'] = request.POST['main_input']
+        return render(request ,"index/index.html",context )
+    if ( request.method == "GET"):
+        return render(request ,"index/index.html",context )
