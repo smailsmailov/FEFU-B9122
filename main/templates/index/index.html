@@ -1,8 +1,2 @@
-{{csrf_token}}
-<form  method="post">
-  {% csrf_token %}
-  <input type="text" name="main_input" value="">
-  <button type="submite">Отправить</button>
-</form>
-<p>{{req_post}}</p>
-<p>{{test}}</p>
+{% include "include/include.html" with name="DANIL" age="123"%}
+{% include "include/include.html"  only%}
