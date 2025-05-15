@@ -1,25 +1,45 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
- function Test({name}) {
-  const [count, setCount] = useState(0)
+import axios from 'axios'
+import api from '../../shared/api'
 
-  const handleBtn = () => {
-    setCount(count + 1 )
+function Test() {
+  const [loading, setLoading] = useState(true)
+  const [data, setData] = useState('')
+  const [error, setError] = useState(null)
+
+  async function getData() {
+    console.log(await api.post('/api/test_1/', { name: 'qweasdzcx' }))
   }
 
-  const handleMinBtn = () => {
-    setCount(count - 1 )
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        api
+          .get('/api/test/')
+          .then(response => {
+            console.log(response)
+            setData(response)
+          })
+          .catch(error => console.error(error))
+
+        getData()
+      } catch (err) {
+        setError(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error ^_^</div>
 
   return (
     <>
-      <div>
-          <p>
-            {count}
-          </p>
-            <button onClick={handleMinBtn}>-</button>
-            <button onClick={handleBtn}>+</button>
-      </div>
+      <div>{data}</div>
     </>
   )
 }
